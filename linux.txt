@@ -1,1 +1,14 @@
-linux
+
+echo "Message" > message.txt            // create file with text
+
+
+
+Ctrl + Z      // move to foreground
+fg            // get running application from foreground
+
+
+hostname -I 		// check ip inside container
+
+netstat -tulnp    // show used ports
+
+
