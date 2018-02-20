@@ -1,0 +1,73 @@
+
+sudo systemctl status docker          // check that docker is running
+
+docker ps                             // show running containers
+docker ps -a                          // show all existing containers
+docker images                         // show images
+
+docker stop web                       // stop running container with name web
+docker start web                      // start stopped container with name web
+
+docker rm web	                        // remove container by name
+docker rmi web                        // remove image by name
+
+
+docker build -f Dockerfile -t springboot .          // create image with name springboot by config file Dockerfile. Dot - current folder
+docker run --name web -p 80:8085 springboot         // start running image with name springboot on port 8085 and expose on port 80
+
+- P (random ports)
+- d (flag to run this container in the background)
+- p (sert ports -p 80:80)
+
+docker run -d -P --name web nginx
+
+docker exec -it [container-id] bash     // enter to running container console
+
+----------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
+                          
+                          Start nginx server on port 80
+cd $HOME
+mkdir testsite
+cd testsite
+echo "<h1>Hello, world from testsite!</h1>" > index.html
+cat index.html
+vi index.html
+sudo docker run --name testsite -p 80:80 -d -v $HOME/testsite:/usr/share/nginx/html nginx
+
+----------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
+                          
+                          Run springboot application in docker container
+                          
+Create file: Dockerfile
+FROM openjdk:8
+ADD springboottest1.jar springboottest1.jar
+EXPOSE 8085
+ENTRYPOINT ["java", "-jar", "springboottest1.jar"]
+
+docker build -f Dockerfile -t springboot .		  // in current folder should be file Dockerfile. Dot - current directory
+docker images									                  // check that image created
+docker run --name web -p 8085:8085 springboot	  // run created image on port 8085
+
+----------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
+
+                          Run WildFly (JBoss) server
+                          
+docker run -d -p 8080:8080 -it jboss/wildfly                // To boot in standalone mode
+// To boot in standalone mode with admin console available remotely
+sudo docker run -p 8080:8080 -p 9990:9990 -d jboss/wildfly /opt/jboss/wildfly/bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0
+
+// Must be configured console user. Enter to created container
+docker exec -it [container-id] bash
+cd /wildfly/bin
+./add-user.sh
+
+// docker file to create image with configured console user
+FROM jboss/wildfly:latest
+RUN /opt/jboss/wildfly/bin/add-user.sh admin Admin#007 --silent
+CMD ["/opt/jboss/wildfly/bin/standalone.sh", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0"]
+
+----------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------
