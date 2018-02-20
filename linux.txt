@@ -11,4 +11,6 @@ hostname -I 		// check ip inside container
 
 netstat -tulnp    // show used ports
 
+sudo python -m SimpleHTTPServer 80          // start web server on port 
+
 
