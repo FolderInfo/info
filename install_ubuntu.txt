@@ -1,0 +1,29 @@
+
+<h1>Install docker</h1>
+sudo apt-get update
+
+sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
+
+sudo apt-add-repository 'deb https://apt.dockerproject.org/repo ubuntu-xenial main'
+
+sudo apt-get update
+
+apt-cache policy docker-engine
+docker-engine:
+  Installed: (none)
+  Candidate: 1.11.1-0~xenial
+  Version table:
+     1.11.1-0~xenial 500
+        500 https://apt.dockerproject.org/repo ubuntu-xenial/main amd64 Packages
+     1.11.0-0~xenial 500
+        500 https://apt.dockerproject.org/repo ubuntu-xenial/main amd64 Packages
+		
+sudo apt-get install -y docker-engine
+
+// check if installed
+sudo systemctl status docker
+? docker.service - Docker Application Container Engine
+   Loaded: loaded (/lib/systemd/system/docker.service; enabled; vendor preset: enabled)
+   Active: active (running) since Sun 2016-05-01 06:53:52 CDT; 1 weeks 3 days ago
+     Docs: https://docs.docker.com
+ Main PID: 749 (docker)....
